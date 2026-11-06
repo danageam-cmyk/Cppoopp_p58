@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="shop">
+      <UniqueIdentifier>{acf76e17-d5df-4175-a715-e9aef576053a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data_strures">
+      <UniqueIdentifier>{79d7b8ef-7c2e-44f5-8d70-148dcc5cb250}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Cppoopp_p58.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="fraction.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="intro.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="basics.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="Electrical.cpp">
+      <Filter>shop</Filter>
+    </ClCompile>
+    <ClCompile Include="Laptop.cpp">
+      <Filter>shop</Filter>
+    </ClCompile>
+    <ClCompile Include="Monitor.cpp">
+      <Filter>shop</Filter>
+    </ClCompile>
+    <ClCompile Include="Product.cpp">
+      <Filter>shop</Filter>
+    </ClCompile>
+    <ClCompile Include="data_structures.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
+    <ClCompile Include="linked_list.cpp">
+      <Filter>data_strures</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fraction.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="intro.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="basics.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Electrical.h">
+      <Filter>shop</Filter>
+    </ClInclude>
+    <ClInclude Include="Laptop.h">
+      <Filter>shop</Filter>
+    </ClInclude>
+    <ClInclude Include="Monitor.h">
+      <Filter>shop</Filter>
+    </ClInclude>
+    <ClInclude Include="Periphery.h">
+      <Filter>shop</Filter>
+    </ClInclude>
+    <ClInclude Include="Product.h">
+      <Filter>shop</Filter>
+    </ClInclude>
+    <ClInclude Include="data_structures.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="linked_list.h">
+      <Filter>data_strures</Filter>
+    </ClInclude>
+    <ClInclude Include="queue.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="array.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

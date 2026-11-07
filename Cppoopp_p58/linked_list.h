@@ -5,206 +5,217 @@
 
 template<typename T>
 struct ListNode {
-    T data;
-    ListNode<T>* prev = nullptr;
-    ListNode<T>* next = nullptr;
+	T data;
+	ListNode* prev = NULL;
+	ListNode* next = NULL;
 };
 
 template<typename T>
 class LinkedList {
 private:
-    ListNode<T>* first = nullptr;
-    ListNode<T>* last = nullptr;
-    size_t size = 0;
-
+	ListNode<T>* first = NULL;
+	ListNode<T>* last = NULL;
+	size_t size = 0;
 public:
-    void   add(T data);
-    void   insertBefore(T data, size_t index);
-    T      remove(size_t index);
-    size_t getSize() const { return size; }
+	void   add(T data);
+	void   insertBefore(T data, size_t index);
+	T      remove(size_t index);
+	size_t getSize() const { return size; }
 
-    void print();
+	void print();
 
-    
-    LinkedList<T>* clone() const {
-        LinkedList<T>* clonedList = new LinkedList<T>();
-        ListNode<T>* current = first;
-        while (current != nullptr) {
-            clonedList->add(current->data);
-            current = current->next;
-        }
-        return clonedList;
-    }
+	LinkedList<T>* clone() const;
+	void clear();
+	LinkedList() : first{ NULL }, last{ NULL }, size{0} { //
+		
 
-    ListNode<T>* get_head() const {
-        return first;
-    }
+	}
 
-    LinkedList<T>* operator+(const LinkedList<T>& other) const {
-        LinkedList<T>* newList = new LinkedList<T>();
+	LinkedList(const LinkedList<T>& other) { // copy
+		ListNode<T>* node = other.first;
+		while (node) {
+			this->add(node->data);
+			node = node->next;
+		}
+	}
 
-        ListNode<T>* current = first;
-        while (current != nullptr) {
-            newList->add(current->data);
-            current = current->next;
-        }
+	LinkedList(LinkedList<T>&& other) : //move
+		first{ other.first }, last{ other.last }, size{ other.size }
+	{
+		other.first = other.last = NULL;
+	}
 
-        current = other.first;
-        while (current != nullptr) {
-            newList->add(current->data);
-            current = current->next;
-        }
 
-        return newList;
-    }
+	LinkedList<T>& operator = (const LinkedList<T>& other) {
+		//
+		ListNode<T>* node = first;
+		while (node) {
+			first = first->next;
+			delete node;
+			node = first;
+		}
+		first = last = NULL;
+		///
+		node = other.first;
+		while (node) {
+			this->add(node->data);
+			node = node->next;
+		}
+	}
+	LinkedList<T>& operator = (LinkedList<T>&& other) {
+		
+	this->clear();
+		ListNode<T>* node = first;
+		while (node) {
+			first = first->next;
+			delete node;
+			node = first;
+		}
+		first = last = NULL;
 
-    LinkedList<T>* operator*(const LinkedList<T>& other) const {
-        LinkedList<T>* newList = new LinkedList<T>();
+		while (node) {
+			this->add(node->data);
+			node = node->next;
+		}
+}
+	
 
-        ListNode<T>* curr1 = first;
-        while (curr1 != nullptr) {
-            bool found = false;
-            ListNode<T>* curr2 = other.first;
-            while (curr2 != nullptr) {
-                if (curr1->data == curr2->data) {
-                    found = true;
-                    break;
-                }
-                curr2 = curr2->next;
-            }
 
-            if (found) {
-                bool alreadyAdded = false;
-                ListNode<T>* checkNode = newList->first;
-                while (checkNode != nullptr) {
-                    if (checkNode->data == curr1->data) {
-                        alreadyAdded = true;
-                        break;
-                    }
-                    checkNode = checkNode->next;
-                }
 
-                if (!alreadyAdded) {
-                    newList->add(curr1->data);
-                }
-            }
-
-            curr1 = curr1->next;
-        }
-
-        return newList;
-    }
+	~LinkedList() {   //destructor
+		while (first) {
+			last = first;
+			first = first->next;
+			delete last;
+		}
+	}
 };
 
-// --- Реалізація методів класу LinkedList ---
+// #include "linked_list.cpp"
+
+template<typename T>
+LinkedList<T>* LinkedList<T>::clone() const {
+	LinkedList<T>* res = new LinkedList<T>;
+	ListNode<T>* node = this->first;
+	while (node) {
+		res->add(node->data);
+		node = node->next;
+	}
+	return res;
+
+}
 
 template<typename T>
 void LinkedList<T>::add(T data) {
-    if (last) {
-        last->next = new ListNode<T>{ data, last, nullptr };
-        last = last->next;
-    }
-    else {
-        first = last = new ListNode<T>{ data, nullptr, nullptr };
-    }
-    size += 1;
+	if (last) {  //                           |попередній = last
+		last->next = new ListNode<T>{ data, last, NULL };
+		last = last->next;
+	}
+	else {
+		first = last = new ListNode<T>{ data, NULL, NULL };
+	}
+	size += 1;
 }
 
 template<typename T>
 void LinkedList<T>::insertBefore(T data, size_t index) {
-    if (index == 0) {
-        if (first) {
-            first = first->prev = new ListNode<T>{ data, nullptr, first };
-            size += 1;
-        }
-        else {
-            add(data);
-        }
-    }
-    else {
-        if (index < size) {
-            ListNode<T>* node = first;
-            for (size_t i = 0; i < index; ++i) {
-                node = node->next;
-            }
-            node->next = new ListNode<T>{ data, node, node->next };
-            node->next->next->prev = node->next;
-            size += 1;
-        }
-        else {
-            throw std::range_error(
-                std::format("LinkedList<T>::insertBefore: Unable to insert element. Max list index {} but got {}", size - 1, index)
-            );
-        }
-    }
+	if (index == 0) {
+		// додавання в першу позицію (перед першим)
+		if (first) {
+			first = first->prev = new ListNode<T>{ data, NULL, first };
+			size += 1;
+		}
+		else {
+			add(data);
+		}
+	}
+	else {
+		if (index < size) {
+			ListNode<T>* node = first;
+			for (size_t i = 0; i < index - 1; ++i) {
+				node = node->next;
+			}
+			// зупинились перед index, додаємо після нього
+			node->next = new ListNode<T>{ data, node, node->next };
+			node->next->next->prev = node->next;
+			size += 1;
+		}
+		else {
+			// помилка - index out of range
+			throw std::range_error(
+				std::format("LinkedList<T>::insertBefore: Unable to insert element. Max list index {} but got {}", size - 1, index)
+			);
+		}
+	}
 }
 
 template<typename T>
 void LinkedList<T>::print() {
-    ListNode<T>* node = first;
-    if (node == nullptr) {
-        std::cout << "Empty list, size = " << size << std::endl;
-    }
-    else {
-        std::cout << size << " element(s): ";
-        while (node) {
-            std::cout << node->data << " ";
-            node = node->next;
-        }
-        std::cout << std::endl;
-    }
+	ListNode<T>* node = first;
+	if (node == NULL) {
+		std::cout << "Empty list, size = " << size << std::endl;
+	}
+	else {
+		std::cout << size << " element(s): ";
+		while (node) {
+			std::cout << node->data << " ";
+			node = node->next;
+		}
+		std::cout << std::endl;
+	}
 }
 
 template<typename T>
 T LinkedList<T>::remove(size_t index) {
-    if (index < size) {
-        if (index == 0) {
-            ListNode<T>* node = first;
-            T data = node->data;
-            first = first->next;
-            if (first) {
-                first->prev = nullptr;
-            }
-            delete node;
-            size -= 1;
-            if (size == 0) {
-                last = nullptr;
-            }
-            return data;
-        }
+	if (index < size) {
+		if (index == 0) {  // видаляємо перший елемент
+			ListNode<T>* node = first;  //  first                    last
+			T data = node->data;		//   [p|0|n]<->[p|1|n]<->[p|2|n]
+			first = first->next;		// NULL        f              NULL
+			if (first) {				// first = first->next;
+				first->prev = NULL;		// 
+			}							//  first last
+			delete node;				//   [p|0|n]
+			size -= 1;					// NULL   NULL
+			if (size == 0) {			// 
+				last = NULL;			// 100   200   300  400  
+			}							//  1     3     2    4   [200|4|NULL]
+			return data;				// 
+		}								// [NULL|1|300]  [100|2|200] [300|3|400]
 
-        if (index == size - 1) {
-            ListNode<T>* node = last;
-            T data = node->data;
-            last = last->prev;
-            if (last) {
-                last->next = nullptr;
-            }
-            delete node;
-            size -= 1;
-            if (size == 0) {
-                first = nullptr;
-            }
-            return data;
-        }
-        else {
-            ListNode<T>* node = first;
-            for (size_t i = 0; i < index; ++i) {
-                node = node->next;
-            }
-            node->prev->next = node->next;
-            node->next->prev = node->prev;
-            T data = node->data;
-            delete node;
-            size -= 1;
-            return data;
-        }
-    }
-    else {
-        throw std::range_error(
-            std::format("LinkedList<T>::remove: Unable to remove element. Max list index {} but got {}", size - 1, index)
-        );
-    }
+		if (index == size - 1) {        // видаляємо останній елемент
+			ListNode<T>* node = last;
+			T data = node->data;
+			last = last->prev;
+			if (last) {
+				last->next = NULL;
+			}
+			delete node;
+			size -= 1;
+			if (size == 0) {
+				first = NULL;
+			}
+			return data;
+		}
+		else {  // видалення з середини: ані перший, ані останній
+			ListNode<T>* node = first;
+			for (size_t i = 0; i < index; ++i) {  //  first      node         last
+				node = node->next;                //   [p|0|n]<->[p|1|n]<->[p|2|n]
+			}                                     // NULL                       NULL
+			node->prev->next = node->next;        //   [p|0|n]<----------->[p|2|n]
+			node->next->prev = node->prev;        // [NULL|1|300]  [100|2|200] [300|3|400]
+			T data = node->data;                  // [NULL|1|200]              [100|3|400]
+			delete node;
+			size -= 1;
+			return data;
+		}
+	}
+	else {
+		// error
+		throw std::range_error(
+			std::format("LinkedList<T>::remove: Unable to remove element. Max list index {} but got {}", size - 1, index)
+		);
+	}
 }
 /*
 	node

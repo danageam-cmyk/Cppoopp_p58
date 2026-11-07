@@ -1,8 +1,8 @@
 #pragma once
 
-#include "shop/Laptop.h"
-#include "shop/Monitor.h"
-#include "shop/Electrical.h"
-#include "shop/Product.h"
+#include "Laptop.h"
+#include "Monitor.h"
+#include "Electrical.h"
+#include "Product.h"
 
 void basics();

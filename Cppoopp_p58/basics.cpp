@@ -1,7 +1,15 @@
 #include <iostream>
 #include "basics.h"
+#include <memory>
 
 void basics() {
+	std::cout << "OOP dasik" << std::endl;
+	LinkedList<Product*> stock;
+	LinkedList<Product*>* stock;
+	LinkedList<std::unique_ptr<Product>> stock;
+	std::unique_ptr<LinkedList<Product*>> stock;
+}
+void basics_2() {
 	std::cout << "OOP Basics" << std::endl;
 	// Поліморфізм - поєднання до єдиного масиву (колекції)
 	// об'єктів різного типу. Формально, об'єкти мають один
@@ -10,7 +18,7 @@ void basics() {
 
 	Product* stock[2];
 
-	stock[0] = (new Laptop())
+	stock[0] =  (new Laptop())
 		->setHardware("Intel Core 5, RAM 16GB, SSD 512GB")
 		->setPower(90)
 		->setName("Acer Nitro")
@@ -22,11 +30,35 @@ void basics() {
 		->setName("Dell Vision")
 		->setPrice(7950);
 
+	std::unique_ptr<Product> ptr = std::make_unique<Laptop>(
+		(new Laptop())
+		->setHardware("Intel Core 5, RAM 16GB, SSD 512GB")
+		->setPower(90)
+		->setName("Acer Nitro")
+		->setPrice(60499));
+
+	std::unique_ptr<Product> ptr2 = std::move(ptr);
+
+	std::shared_ptr<Product> s1 = std::make_shared<Monitor>(
+		(new Monitor())
+		->setDiagonal(32)
+		->setPower(120)
+		->setName("Dell Vision")
+		->setPrice(7950)
+		);
+
+	std::shared_ptr<Product> s2 = s1;
+
 	for (auto product : stock) {
 		std::cout << product->toString() << std::endl;
 	}
+
 }
 
+
+/*
+
+*/
 /*
 Основні принципи ООП.
 Абстрагування, спадкування, поліморфізм, інкапсуляція.

@@ -4,10 +4,27 @@
 
 void basics() {
 	std::cout << "OOP dasik" << std::endl;
-	LinkedList<Product*> stock;
-	LinkedList<Product*>* stock;
-	LinkedList<std::unique_ptr<Product>> stock;
+	//LinkedList<Product*> stock;
+	//LinkedList<Product*>* stock;
+	//LinkedList<std::unique_ptr<Product>> stock;
 	std::unique_ptr<LinkedList<Product*>> stock;
+	std::make_unique<LinkedList<Product*>>();
+
+	stock->add((new Laptop())
+		->setHardware("Intel Core 5, RAM 16GB, SSD 512GB")
+		->setPower(90)
+		->setName("Acer Nitro")
+		->setPrice(60499));
+
+	stock->add((new Monitor())
+		->setDiagonal(32)
+		->setPower(120)
+		->setName("Dell Vision")
+		->setPrice(7950));
+	stock->print();
+
+	//delete stock;
+
 }
 void basics_2() {
 	std::cout << "OOP Basics" << std::endl;

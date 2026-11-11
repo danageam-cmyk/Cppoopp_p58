@@ -3,6 +3,7 @@
 #include "queue.h"
 #include <iostream>
 #include "array.h"
+#include "brackets_checker.h"
 #include <stdexcept>
 
 
@@ -213,6 +214,34 @@ void data_structures_array_demo() {
 
     arr.print();
     std::cout << "Array Size (GetSize): " << arr.GetSize() << std::endl;
+}
+
+
+void runBracketsTask() {
+    std::cout << "=== Task: Brackets Validation ===" << std::endl;
+
+    std::string testStr1 = "{[a + b] * (c - d)}; extra text ignored";
+    std::string testStr2 = "([)] ;"; // Помилка у вкладеності
+
+    std::cout << "Test 1: " << (validateBrackets(testStr1) ? "Correct" : "Incorrect") << std::endl;
+    std::cout << "Test 2: " << (validateBrackets(testStr2) ? "Correct" : "Incorrect") << std::endl;
+}
+
+
+void testBracketsTask() {
+    std::cout << "=== Test Brackets Task ===" << std::endl;
+
+    // Приклад 1 (коректний рядок із закінченням ';')
+    std::string validStr = "({x-y-z} * [x + 2y] - (z + 4x));";
+    std::cout << "Test 1:\n";
+    checkBracketsWithReport(validStr);
+
+    std::cout << "\n-----------------\n";
+
+    // Приклад 2 (некоректний рядок із завдання: заміна типу дужки)
+    std::string invalidStr = "([x-y-z} * [x + 2y) - {z + 4x)].;";
+    std::cout << "Test 2:\n";
+    checkBracketsWithReport(invalidStr);
 }
 /*
 Структури даних та шаблонне програмування

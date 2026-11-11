@@ -1,16 +1,15 @@
 #pragma once
 #include <iostream>
-#include <stack>
 #include <string>
+#include "queue.h"
 
-void checkBracketsWithReport(const std::string& input) {
-    std::stack<char> s;
-    std::stack<size_t> indices; 
+inline void checkBracketsWithReport(const std::string& input) {
+    Stack<char> s;
+    Stack<size_t> indices;
 
     size_t length = input.length();
     bool hasSemicolon = false;
     size_t semicolonPos = length;
-
 
     for (size_t i = 0; i < length; ++i) {
         if (input[i] == ';') {
@@ -25,22 +24,18 @@ void checkBracketsWithReport(const std::string& input) {
     for (size_t i = 0; i < workLength; ++i) {
         char ch = input[i];
 
-
         if (ch == '(' || ch == '{' || ch == '[') {
             s.push(ch);
             indices.push(i);
         }
-  
         else if (ch == ')' || ch == '}' || ch == ']') {
-  
-            if (s.empty()) {
+            if (s.isEmpty()) {
                 std::cout << "Помилка: зайва закриваюча дужка '" << ch << "' на позиції " << i << ".\n";
                 std::cout << "Рядок до місця помилки: \"" << input.substr(0, i + 1) << "\"\n";
                 return;
             }
 
-            char topChar = s.top();
-            s.pop();
+            char topChar = s.pop();
             indices.pop();
 
             if ((ch == ')' && topChar != '(') ||
@@ -55,13 +50,12 @@ void checkBracketsWithReport(const std::string& input) {
         }
     }
 
-    if (!s.empty()) {
-        size_t errorIndex = indices.top(); 
-        std::cout << "Помилка: незакрита відкриваюча дужка '" << s.top() << "' на позиції " << errorIndex << ".\n";
+    if (!s.isEmpty()) {
+        size_t errorIndex = indices.peek();
+        std::cout << "Помилка: незакрита відкриваюча дужка '" << s.peek() << "' на позиції " << errorIndex << ".\n";
         std::cout << "Рядок до місця помилки: \"" << input.substr(0, errorIndex + 1) << "\"\n";
         return;
     }
 
-    
     std::cout << "Рядок є коректним! Усі дужки розставлені правильно.\n";
 }

@@ -5,7 +5,7 @@
 int main()
 {
     // intro();
-     basics();
-    //data_structures();
+    basics();
+    // data_structures();
     return 0;
 }

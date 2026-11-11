@@ -1,26 +1,27 @@
 #include "data_structures.h"
 #include "linked_list.h"
 #include "queue.h"
-#include <iostream>
 #include "array.h"
 #include "brackets_checker.h"
+#include <iostream>
 #include <stdexcept>
 
-
 void data_structures() {
-    LinkedList<int>* intList =
-        new LinkedList<int>();
+    LinkedList<int>* intList = new LinkedList<int>();
     intList->print();
-    LinkedList<int>* intList2 =
-        intList->clone();
+
+    LinkedList<int>* intList2 = intList->clone();
     intList2->print();
+
     intList->insertBefore(51, 0);
     intList2->insertBefore(52, 0);
-    std::cout << "list1" << std::endl;
+
+    std::cout << "list1:" << std::endl;
     intList->print();
-    std::cout << "list2" << std::endl;
+    std::cout << "list2:" << std::endl;
     intList2->print();
-    std::cout << "-------------------" << std::endl;
+    std::cout << "--------------" << std::endl;
+
     Queue<int> queue;
     queue.enqueue(1);
     queue.enqueue(2);
@@ -29,74 +30,118 @@ void data_structures() {
     while (!queue2.isEmpty()) {
         std::cout << queue2.dequeue() << std::endl;
     }
+
+    delete intList;
+    delete intList2;
+}
+
+void data_structures_task2_demo() {
+    std::cout << "\n=== Demo Task 2 (+ and * operators) ===" << std::endl;
+    LinkedList<int> l1;
+    l1.add(1); l1.add(2); l1.add(3);
+
+    LinkedList<int> l2;
+    l2.add(2); l2.add(3); l2.add(4);
+
+    std::cout << "L1: "; l1.print();
+    std::cout << "L2: "; l2.print();
+
+    LinkedList<int>* unionResult = l1 + l2;
+    std::cout << "L1 + L2 (Union): "; unionResult->print();
+
+    LinkedList<int>* intersectResult = l1 * l2;
+    std::cout << "L1 * L2 (Intersection): "; intersectResult->print();
+
+    delete unionResult;
+    delete intersectResult;
+}
+
+void data_structures_array_demo() {
+    std::cout << "\n=== Demo Task 3 (Array Container) ===" << std::endl;
+    Array<double> arr;
+    arr.add(1.1);
+    arr.add(2.2);
+    arr.add(3.3);
+    arr.print();
+    std::cout << "Array GetSize(): " << arr.GetSize() << std::endl;
+}
+
+void data_structures_brackets_demo() {
+    std::cout << "\n=== Demo Brackets Checker ===" << std::endl;
+    std::string validStr = "({x-y-z} * [x + 2y] - (z + 4x));";
+    std::string invalidStr = "([x-y-z} * [x + 2y) - {z + 4x)].;";
+
+    std::cout << "Check 1:\n";
+    checkBracketsWithReport(validStr);
+
+    std::cout << "\nCheck 2:\n";
+    checkBracketsWithReport(invalidStr);
 }
 
 void data_structures_4() {
-    // Демонстрація виняткових ситуацій
     LinkedList<int>* intList = new LinkedList<int>();
-    intList->add(10);   // ці команди не мають 
-    intList->add(20);   // винятків в середині і не 
-    intList->add(30);   // повинні вміщуватись в блок try
+    intList->add(10);
+    intList->add(20);
+    intList->add(30);
     intList->print();
-    
+
     try {
-        intList->insertBefore(5, 0);  // у тілі insertBefore є throw
-        intList->print();             // але перша команда не створить виняток
-        intList->insertBefore(15, 5); // тоді як друга - створить
-        intList->print();             // і виконання зупиниться перед даним рядком
+        intList->insertBefore(5, 0);
+        intList->print();
+        intList->insertBefore(15, 5);
+        intList->print();
     }
     catch (const std::range_error& ex) {
         std::cerr << "Exception: " << ex.what() << std::endl;
     }
-    // intList->insertBefore(15, 5);  виклик без try призводить до 
-    // intList->print();              аварійної зупинки програми.
+
     try {
         intList->remove(10);
     }
     catch (const std::range_error& ex) {
         std::cerr << "Exception: " << ex.what() << std::endl;
     }
+
     Queue<int> queue;
     queue.enqueue(1);
     queue.enqueue(2);
     queue.enqueue(3);
-    // Вилучення всіх даних з черги
-    // Варіант з винятком - не рекомендований
-    try { while (true)  std::cout << queue.dequeue() << std::endl; }
-    catch (...) {}   // варіант з ігноруванням винятку
+
+    try { while (true) std::cout << queue.dequeue() << std::endl; }
+    catch (...) {}
+
     queue.enqueue(1);
     queue.enqueue(2);
     queue.enqueue(3);
-    // варіант без винятків
-    while (!queue.isEmpty())  std::cout << queue.dequeue() << std::endl;
+
+    while (!queue.isEmpty()) std::cout << queue.dequeue() << std::endl;
+
+    std::cout << "\n--- Stack Exceptions Demo ---" << std::endl;
+    Stack<int> myStack;
+    try {
+        myStack.pop();
+    }
+    catch (const std::length_error& ex) {
+        std::cerr << "Stack Exception caught: " << ex.what() << std::endl;
+    }
+
+    delete intList;
 }
-/*
-Д.З. Ввести винятки в методи класу Стек (предмет попередніх ДЗ)
-Прикласти скріншоти прикладів їх перевірки.
-*/
 
-template<typename T>   // Шаблонними можуть бути функції та типи (класи, структури)
-void print(T arg) {    // Шаблон вводить "змінну" для типу, традиційно "Т"
-    std::cout << arg   // В самій функції (чи типі) ця "Т" вживається там,
-        << std::endl;  // де пізніше має бути реальний тип даних
-}                      // Далі компілятор шукає усі вжитки даного шаблону ...
+template<typename T>
+void print(T arg) {
+    std::cout << arg << std::endl;
+}
 
-template<typename T>   // Перед кожним оголошенням повторюється template
-struct fraction {      // Для типів (наприклад, структур) шаблон "Т"
-    T numerator;       // може вживатись для оголошення полів
-    T denominator;     // чи методів.
-    void print() {     // Якщо метод не залежить від "Т", то
-        std::cout      // в його тілі не робимо відповідних позначок
-            << numerator   // 
-            << '/'         // 
-            << denominator;// 
-    }                  // Інші методи можуть мати залежність від "Т"
-    T get_numerator() {
-        return numerator;
+template<typename T>
+struct fraction {
+    T numerator;
+    T denominator;
+    void print() {
+        std::cout << numerator << '/' << denominator;
     }
-    void set_numerator(T n) {
-        numerator = n;
-    }
+    T get_numerator() { return numerator; }
+    void set_numerator(T n) { numerator = n; }
 };
 
 void data_structures_3() {
@@ -131,117 +176,24 @@ void data_structures_2() {
     intList->print();
     std::cout << "removed: " << intList->remove(0) << std::endl;
     intList->print();
+
+    delete intList;
 }
 
 void data_structures_t() {
     std::cout << "Templates" << std::endl;
-    print("Template function demo");  // ... і для кожного конкретного вжитку
-    print(42);                        // створює копію шаблона під даний "Т"
-    print(true);                      // Тобто у підсумку буде кілька (5) різних
-    print('A');                       // функцій під кожен тип окремо, за потреби
-    print<short>(42);                 // прямо вказати тип додаємо <тип>
+    print("Template function demo");
+    print(42);
+    print(true);
+    print('A');
+    print<short>(42);
 
-    fraction<int> f1{ 1, 2 };         // Для різних конкретних типів також
-    fraction<float> f2{ 1.5, 2.5 };   // буде створено різні структури за 
-    fraction<short> f3{ 2, 3 };       // єдиним шаблоном
+    fraction<int> f1{ 1, 2 };
+    fraction<float> f2{ 1.5, 2.5 };
+    fraction<short> f3{ 2, 3 };
     f1.print(); std::cout << std::endl;
     f2.print(); std::cout << std::endl;
     f3.print(); std::cout << std::endl;
-}
-//1
-void data_structures_queue_demo() {
-    std::cout << "=== Template Queue Demo ===" << std::endl;
-
-    Queue<int> int_queue;
-    int_queue.enqueue(100);
-    int_queue.enqueue(200);
-    int_queue.enqueue(300);
-
-    std::cout << "Int queue size: " << int_queue.getLength() << std::endl;
-    while (!int_queue.isEmpty()) {
-        std::cout << "Deported int: " << int_queue.dequeue() << std::endl;
-    }
-
-    Queue<std::string> str_queue;
-    str_queue.enqueue("First in line");
-    str_queue.enqueue("Second in line");
-
-    std::cout << "\nString queue size: " << str_queue.getLength() << std::endl;
-    while (!str_queue.isEmpty()) {
-        std::cout << "Deported string: " << str_queue.dequeue() << std::endl;
-    }
-}
-//2
-void data_structures_task2() {
-    std::cout << "=== Task 2 Demo ===" << std::endl;
-
-    LinkedList<int> list1;
-    list1.add(1);
-    list1.add(2);
-    list1.add(3);
-
-    LinkedList<int> list2;
-    list2.add(2);
-    list2.add(3);
-    list2.add(4);
-
-    std::cout << "List 1: "; list1.print();
-    std::cout << "List 2: "; list2.print();
-
-    LinkedList<int>* cloned = list1.clone();
-    std::cout << "Cloned List: ";
-    cloned->print();
-
-    LinkedList<int>* unionList = list1 + list2;
-    std::cout << "Union (List 1 + List 2): ";
-    unionList->print();
-
-    LinkedList<int>* intersectionList = list1 * list2;
-    std::cout << "Intersection (List 1 * List 2): ";
-    intersectionList->print();
-
-    delete cloned;
-    delete unionList;
-    delete intersectionList;
-}
-void data_structures_array_demo() {
-    std::cout << "=== Array Container Demo ===" << std::endl;
-
-    Array<int> arr;
-    arr.add(10);
-    arr.add(20);
-    arr.add(30);
-
-    arr.print();
-    std::cout << "Array Size (GetSize): " << arr.GetSize() << std::endl;
-}
-
-
-void runBracketsTask() {
-    std::cout << "=== Task: Brackets Validation ===" << std::endl;
-
-    std::string testStr1 = "{[a + b] * (c - d)}; extra text ignored";
-    std::string testStr2 = "([)] ;"; // Помилка у вкладеності
-
-    std::cout << "Test 1: " << (validateBrackets(testStr1) ? "Correct" : "Incorrect") << std::endl;
-    std::cout << "Test 2: " << (validateBrackets(testStr2) ? "Correct" : "Incorrect") << std::endl;
-}
-
-
-void testBracketsTask() {
-    std::cout << "=== Test Brackets Task ===" << std::endl;
-
-    // Приклад 1 (коректний рядок із закінченням ';')
-    std::string validStr = "({x-y-z} * [x + 2y] - (z + 4x));";
-    std::cout << "Test 1:\n";
-    checkBracketsWithReport(validStr);
-
-    std::cout << "\n-----------------\n";
-
-    // Приклад 2 (некоректний рядок із завдання: заміна типу дужки)
-    std::string invalidStr = "([x-y-z} * [x + 2y) - {z + 4x)].;";
-    std::cout << "Test 2:\n";
-    checkBracketsWithReport(invalidStr);
 }
 /*
 Структури даних та шаблонне програмування
@@ -268,29 +220,29 @@ void testBracketsTask() {
    = списки-масиви (Array List) "тримають" масив із запасом,
      за потреби більшого розширення масив перекопійовується
      у більший масив
-  Порівняння: масиви дозволяють швидко одержати елемент з довільним
+ Порівняння: масиви дозволяють швидко одержати елемент з довільним
    індексом, тоді як зв'язні списки мають "шукати" елементи
    переходячи до сусідних певну кількість разів -- пошук швидший у масивах.
    1 <-> 2 <-> 3 <-> 4 <-> 5
    Недолік масивів полягає в операціях вставки елементів в середину або
    вилучення з середини. В такому разі решта елементів має "посунутись"
    1 2 3 4 5 6 7     тоді як для зв'язних списків необхідно лише
-       ^             переставити покажчики на інших сусідів
-   1 2 - 4 5 6 7          1 <-> 2 <-> 3 <-> 4 <-> 5
-        <-                            ^
+         ^           переставити покажчики на інших сусідів
+   1 2 - 4 5 6 7         1 <-> 2 <-> 3 <-> 4 <-> 5
+         <-                        ^
    1 2 4 5 6 7            1 <-> 2 <-------> 4 <-> 5
 
    1 2 4 5 6 7            1 <-> 2 <-------> 4 <-> 5
-        10                            10
-            ->
-   1 2 4 10 5 6 7         1 <-> 2           4 <-> 5
-                                 \         /
-                                  <-> 10 <->
+         10                        10
+             ->
+   1 2 4 10 5 6 7         1 <-> 2          4 <-> 5
+                             \       /
+                              <-> 10 <->
  Вибір між видами списків робиться з аналізу операцій, що з ними виконуються:
  якщо список будується один раз, а далі тільки одержуються елементи
-  (наприклад, зчитати файл і потім працювати з даними), тоді краще масив
+ (наприклад, зчитати файл і потім працювати з даними), тоді краще масив
  якщо список весь час змінюється (наприклад, ігрові елементи - спавняться,
-  збиваються, зникають), тоді краще зв'язний список
+ збиваються, зникають), тоді краще зв'язний список
 
 - Множина (Set) - набір з унікальними значеннями (що не повторюються)
    зазвичай в множинах реалізується швидкий пошук завдяки організації
@@ -303,23 +255,23 @@ void testBracketsTask() {
    елементів є порівну. Якщо в множини непарна кількість елементів, то
    медіана є середнім елементом. Якщо парна, то середнє від центральних.
    (0 1 2 3 4 5 6 7 8 9 10)
-              ^
-                          5
-                      /       \
+             ^
+                        5
+                    /       \
                (0 1 2 3 4)  (6 7 8 9 10)
                     ^            ^
-                          5                            5
-                        /   \                        /    \
-                       2     8                      2      8
-                      / \   / \                    / \    / \
-                     1   4 6   9                  0   3  6   9
-                    /   /   \   \                  \   \  \   \
-                   0   3     7   10                 1   4  7   10 - 11 - 12 - 13
+                            5                                    5
+                          /   \                                /   \
+                         2     8                              2     8
+                        / \   / \                            / \   / \
+                       1   4 6   9                          0   3 6   9
+                      /   /   \   \                        \   \   \   \
+                     0   3     7   10                       1   4   7   10 - 11 - 12 - 13
 
- 2^3 = 8; 2^4 = 16; 2^5 = 32; 2^10 = 1024
- 1000 елементів - пошук до 10 разів
- 1млн елементів - до 20
- 1млрд - до 30
+  2^3 = 8; 2^4 = 16; 2^5 = 32; 2^10 = 1024
+  1000 елементів - пошук до 10 разів
+  1млн елементів - до 20
+  1млрд - до 30
 
 - Асоціативні масиви (Map, Dictionary, Hash-Table) - структури даних,
    в яких індексація може бути не числова. Їх також називають

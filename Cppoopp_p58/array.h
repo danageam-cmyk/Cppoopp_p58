@@ -28,6 +28,4 @@ public:
     void print() const {
         list->print();
     }
-
 };
-////

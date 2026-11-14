@@ -13,4 +13,6 @@ public:
 	Laptop(const Laptop& other) : hardware{ other.hardware } {}
 	Laptop(Laptop&& other) noexcept : hardware{ other.hardware } {}
 	~Laptop() {}
+
+
 };
